@@ -1,26 +1,63 @@
 # MapReduce.SDCC
-Realize a distributed application that solves the sorting problem using MapReduce
-Master-Worker Architecture:
+# 🗂️ Distributed Sorting with MapReduce
 
-The application is structured following a master-worker architecture, where a Master coordinates the work and assigns tasks to Workers.
-The master assigns both the map and reduce tasks to the workers.
+## 📌 Project Overview
 
-MapReduce Phases:
+This project implements a **distributed sorting algorithm** using the **MapReduce** programming model within a **Master-Worker architecture**.
 
-Map: Each worker receives a portion of the data (called a chunk) from the master to sort. The worker performs sorting on the assigned data chunk.
+The application is designed to divide a large sorting task across multiple workers, enabling parallel processing and scalability.
 
-Shuffle: The workers that have completed the map task send their intermediate results to other workers responsible for the reduce phase. This involves partitioning the intermediate data.
+---
 
-Reduce: The workers receiving the intermediate results (the sorted data from map workers) perform a merge of these results to produce the final sorted output. Each reduce worker writes the final result to a file.
+## 🧠 Architecture: Master-Worker
 
-Synchronization Points:
+- The system follows a **Master-Worker architecture**.
+- The **Master** node is responsible for:
+  - Coordinating the execution
+  - Assigning **Map** and **Reduce** tasks to workers
+- **Worker** nodes perform the actual sorting and merging tasks.
 
-The reduce phase cannot start until all map workers have completed their processing. This requires a synchronization point between the map and reduce phases.
+---
 
-Simplifying Assumptions:
+## 🗃️ MapReduce Phases
 
-No failure occurs in the master or any worker during execution.
+### 🔹 1. Map Phase
+- Each worker receives a **chunk** of unsorted data from the master.
+- The worker **sorts its chunk locally**.
 
-The set of workers is defined at the beginning and does not change during execution.
+### 🔹 2. Shuffle Phase
+- After sorting, each map worker sends its sorted data to one or more reduce workers.
+- Data is **partitioned** appropriately to ensure correct final ordering.
 
-Communication ports are predefined in a configuration file.
+### 🔹 3. Reduce Phase
+- Reduce workers **merge** the sorted chunks received from the map workers.
+- Each reduce worker produces a **final sorted output file**.
+
+---
+
+## ⏳ Synchronization
+
+- The **Reduce phase starts only after all Map workers have completed**.
+- A **synchronization barrier** ensures that Reduce tasks do not begin prematurely.
+
+---
+
+## ⚙️ Simplifying Assumptions
+
+- **No failures** are expected in either the master or workers during execution.
+- The set of workers is **fixed at startup** and remains unchanged.
+- **Communication ports** for all workers are predefined in a configuration file.
+
+---
+
+## 🛠️ Technologies and Tools
+
+- Programming Language: *(add your language, e.g., Python, Java, C++)*
+- Network Communication: *(e.g., sockets, gRPC, REST)*
+- Data Format: *(e.g., plain text, JSON, binary)*
+
+---
+
+## 📁 Repository Structure
+
+
