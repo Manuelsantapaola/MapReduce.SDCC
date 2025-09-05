@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package mapreduce;
+option go_package = "./prog;mapreduce";
+
+// Messaggio che rappresenta i dati da ordinare (chunk di dati)
+message DataChunk {
+    repeated int32 numbers = 1; // Lista di numeri da ordinare
+}
+
+// Messaggio che rappresenta il risultato di un task Map
+message MapResult {
+    repeated int32 sorted_numbers = 1; // Numeri ordinati
+}
+
+// Messaggio che rappresenta il risultato della fase Reduce
+message ReduceResult {
+    repeated int32 final_sorted_numbers = 1; // Risultato finale ordinato
+    bool success = 2; // Indicatore di successo
+    string message = 3; // Messaggio opzionale
+}
+
+// Servizio che gestisce le operazioni di Map e Reduce
+service MapReduceService {
+    // Operazione che invia un chunk di dati al Worker per la fase Map
+    rpc Map (DataChunk) returns (MapResult);
+
+    // Operazione che invia il risultato intermedio ai Worker per la fase Reduce
+    rpc Reduce (MapResult) returns (ReduceResult);
+}
